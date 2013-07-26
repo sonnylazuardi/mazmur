@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mazmur Online</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+  <link rel="stylesheet" href="css/flat-ui.css">
+  <link rel="stylesheet" href="css/style.css">
+  
+  <!--<script type="text/javascript" src="js/json2.js"></script> -->
+  <script type="text/javascript" src="js/vendor/jquery.min.js"></script>
+  <script type="text/javascript" src="js/vendor/bootstrap.min.js"></script>
+  <script type="text/javascript" src="js/vendor/underscore-min.js"></script>
+  <script type="text/javascript" src="js/vendor/backbone-min.js"></script>  
+  <script type="text/javascript" src="js/vendor/backbone.picky.min.js"></script>  
+  <script type="text/javascript" src="js/vendor/backbone.syphon.min.js"></script> 
+  <script type="text/javascript" src="js/vendor/backbone.marionette.min.js"></script> 
+  <script type="text/javascript" src="js/vendor/backbone.localStorage-min.js"></script>  
+
+  <script type="text/javascript" src="js/mazmurApp.js"></script>
+  <script type="text/javascript" src="js/presenter.js"></script>
+  <script type="text/javascript" src="js/laguEntity.js"></script>
+  <script type="text/javascript" src="js/laguList.js"></script>
+  <script type="text/javascript" src="js/lirikViewer.js"></script>
+  <script type="text/javascript" src="js/addEdit.js"></script>
+
+  
+  <script type="text/html" id="lagu-preview-template">
+    <a href="#" class="lagu-preview">
+      <div class="box-icon fui-arrow-right"></div>
+      <h4 class="box-name">
+        <%= judul %>
+      </h4>
+      <div class="menu-lagu">
+        <a href="#" class="btn btn-inverse" id="edit-lagu">
+          <span class="fui-new"></span>
+        </a>
+        <a href="#" class="btn btn-inverse" id="delete-lagu">
+          <span class="fui-cross"></span>
+        </a>
+      </div>
+    </a>    
+  </script>
+  
+  <script type="text/html" id="lirik-view-template">
+    <a href="#" data-ctr="<%= ctr %>" class="lirik-preview">
+      <h4 class="box-name">
+        <%= lirik%>
+      </h4>
+    </a>
+  </script>
+  
+  <script type="text/html" id="form-lagu-template">
+    <form class="form-vertical box-content">
+      <div class="control-group">
+        <label class="control-label" for="judul">
+          Title:
+        </label>
+        <div class="controls">
+          <input id="judul" type="text" name="judul" class="input-block-level" value="<%= typeof(judul)!='undefined' ? judul : '' %>"/>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="lirik">
+          Lyrics:
+        </label>
+        <div class="controls">
+          <textarea id="lirik" name="lirik" class="input-block-level" rows="10"><%= typeof(lirik)!='undefined' ? lirik : '' %></textarea>
+        </div>
+      </div>
+      <div class="control-group">
+        <div class="controls">
+          <button class="btn" id="simpan" type="submit" name="Simpan" value="Simpan">
+            <i class="icon-ok-sign"></i> Save
+          </button>
+          <a href="#" id="removeAdd" class="btn btn-small"><i class="icon-remove"></i> Cancel</a>
+        </div>
+      </div>
+    </form>
+  </script>
+
+</head>
+<body>
+  <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container mainmenu">
+        <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <div class="nav-collapse collapse">
+          <ul class="nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="">About</a></li>
+            <li class="active"><a href="try.html">Try</a></li>
+          </ul>
+          <ul class="nav pull-right">
+            <li><a href="">Login</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="span6">
+        <div class="box">
+          <div class="box-header">
+            <input id="search-lagu" class="box-search-field span4" type="search" value="" placeholder="Search Songs">
+            <div class="btn-group">
+              <a id="add-lagu" class="btn btn-inverse" href="#"><i class="fui-plus"></i></a>
+            </div> 
+          </div>
+          <div id="lagu-list">
+          </div>
+        </div>
+      </div>
+      <div class="span6">
+        <div class="box">
+          <div class="box-header">
+            <div class="btn-group" style="float:right">
+              <a href="#" class="btn btn-inverse" id="livePreview">
+                <span class="fui-play"></span>
+              </a>
+            </div>
+            <h4>Live</h4>
+          </div>
+          <div id="lirik-list">
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="container">
+      <p>&copy; 2013 Mazmur Online by Sonny Lazuardi</p>
+    </div>
+  </div>
+  
+  <script type="text/javascript">
+    $.ajax({
+      url: "data/lagu.json",
+      dataType: "json",
+      success: function(json) {
+        MazmurApp.start({
+          lagus: json
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>

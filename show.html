@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Sungguh Besar Setia-Mu</title>
+	<link rel="stylesheet" href="css/reveal.min.css">
+	<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+	<!-- For syntax highlighting -->
+	<link rel="stylesheet" href="css/zenburn.css">
+
+	<script type="text/html" id="lirik-view-template">
+		<section>
+			<h3>
+				<%= lirik %>
+			</h3>
+		</section>	
+	</script>
+</head>
+<body>
+	<input type="hidden" name="numSlide" id="numSlide" />
+	<a href="#" id="btnChange">Yes</a>
+	<div class="reveal">
+		<!-- Any section element inside of this container is displayed as a slide -->
+		<div class="slides" id="slide-view">
+			<section>
+				<h1>testing</h1>
+				<h5>aja</h5>
+			</section>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/vendor/jquery.min.js"></script>
+	<script type="text/javascript" src="js/vendor/underscore-min.js"></script>
+	<script src="js/vendor/reveal.min.js"></script>
+	<script>
+		// Full list of configuration options available here:
+		// https://github.com/hakimel/reveal.js#configuration
+		function reloadReveal() {
+			Reveal.initialize({
+				controls: false,
+				progress: false,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+			});
+		}
+
+		$("#numSlide").change(function() {
+			alert($("#numSlide").val());
+			var number = parseInt($("#numSlide").val());
+			changeSlide(number);
+		});
+
+		$("#btnChange").click(function (event) {
+			event.preventDefault();
+			changeSlide(3);
+		});
+		
+		function changeSlide(number) {
+			Reveal.slide(number, number, number);
+		}
+
+		var PresenterApp = {
+			lirikData: [],
+			init: function(options) {
+				this.lirikData = options.lirikData;
+				this.$lirikView = $('#slide-view');
+				this.show(this.lirikData);
+				reloadReveal();
+			},
+			show: function(lirikData) {
+				var template = _.template($('#lirik-view-template').html());
+				var ctr = 0;
+				this.$lirikView.empty();
+				_.each(lirikData, function(baris) {
+					this.$lirikView.append(template(baris));
+					ctr++;
+				}, this);
+			}
+		}
+		$(document).ready(function () {
+			PresenterApp.init({lirikData: window.opener.lirikData.toJSON()});
+		});
+	</script>
+</body>
+</html>
