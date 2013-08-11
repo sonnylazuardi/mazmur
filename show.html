@@ -5,9 +5,8 @@
 	<title>Sungguh Besar Setia-Mu</title>
 	<link rel="stylesheet" href="css/reveal.min.css">
 	<link rel="stylesheet" href="css/theme/default.css" id="theme">
-
-	<!-- For syntax highlighting -->
-	<link rel="stylesheet" href="css/zenburn.css">
+	<link rel="stylesheet" href="css/jquery.maximage.min.css">
+	<link rel="stylesheet" href="css/show.css">
 
 	<script type="text/html" id="lirik-view-template">
 		<section>
@@ -18,19 +17,36 @@
 	</script>
 </head>
 <body>
-	<input type="hidden" name="numSlide" id="numSlide" />
-	<a href="#" id="btnChange">Yes</a>
-	<div class="reveal">
+	
+	<div class="reveal" id="uploadBg">
 		<!-- Any section element inside of this container is displayed as a slide -->
 		<div class="slides" id="slide-view">
-			<section>
-				<h1>testing</h1>
-				<h5>aja</h5>
-			</section>
+			
 		</div>
 	</div>
+
+	<div id="videoWrap">
+		<video id="videoBg2" autoplay loop autobuffer muted>
+		</video>
+		<video id="videoBg" autoplay loop autobuffer muted>
+		</video>
+	</div>
+	<div id="imageWrap">
+		<div id="imageBg2">
+		</div>
+		<div id="imageBg">
+		</div>	
+	</div>
+
+	<div id="blackSlide">
+		
+	</div>
+
 	<script type="text/javascript" src="js/vendor/jquery.min.js"></script>
 	<script type="text/javascript" src="js/vendor/underscore-min.js"></script>
+	<script type="text/javascript" src="js/vendor/jquery.cycle.all.min.js"></script>
+	<script type="text/javascript" src="js/vendor/jquery.maximage.min.js"></script>
+	
 	<script src="js/vendor/reveal.min.js"></script>
 	<script>
 		// Full list of configuration options available here:
@@ -46,29 +62,84 @@
 				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
 			});
 		}
-
-		$("#numSlide").change(function() {
-			alert($("#numSlide").val());
-			var number = parseInt($("#numSlide").val());
-			changeSlide(number);
-		});
-
-		$("#btnChange").click(function (event) {
-			event.preventDefault();
-			changeSlide(3);
-		});
 		
 		function changeSlide(number) {
 			Reveal.slide(number, number, number);
+		}
+		function changeBg(file) {
+			var fileURL = URL.createObjectURL(file);
+			var doAmination = function(a, b, cb1, cb2) {
+				$(b).hide();
+				if (cb1) cb1(a, b);
+				$(b).delay(200);
+				$(b).fadeIn('slow', function() {
+					if (cb2) cb2(a, b);
+					$(a).fadeOut('slow');
+				});	
+			};
+			var swapBg = function(a, b, cb1, cb2) {
+				if ($(b).hasClass('active')) {
+					$(b).removeClass('active');
+					doAmination(b, a, cb1, cb2);
+				} else {
+					$(b).addClass('active');
+					doAmination(a, b, cb1, cb2);
+				}
+			};
+			var swapType = function(a, b) {
+				$(a).hide().fadeIn('slow');
+				$(b).show().fadeOut('slow');
+			};
+			if (file.type.indexOf('video/') != -1) {
+				var cb1 = function(a, b) {
+	    		document.querySelector(b).src = fileURL;
+	    		$(b).maximage('maxcover');
+	    	};
+	    	var cb2 = function(a, b) {
+	    		document.querySelector(a).pause();
+	    	};
+	    	swapType('#videoWrap', '#imageWrap');
+	    	swapBg('#videoBg', '#videoBg2', cb1, cb2);
+	    } else if (file.type.indexOf('image/') != -1) {
+	    	var cb1 = function(a, b) {
+	    		$(b).html('<img src="'+fileURL+'" />');
+	    		$(b).maximage();
+	    	};
+	    	swapType('#imageWrap', '#videoWrap');
+				swapBg('#imageBg', '#imageBg2', cb1, null);
+	    }
+		}
+
+		function clearSlide(status) {
+			if (status) {
+				$('.slides').fadeOut('slow');	
+			} else {
+				$('.slides').fadeIn('slow');	
+			}
+		}
+
+		function blankSlide(status) {
+			if (status) {
+				$('#blackSlide').fadeIn('slow');
+			} else {
+				$('#blackSlide').fadeOut('slow');
+			}
 		}
 
 		var PresenterApp = {
 			lirikData: [],
 			init: function(options) {
+				_.bindAll(this, 'dragFile', 'dropFile');
 				this.lirikData = options.lirikData;
 				this.$lirikView = $('#slide-view');
 				this.show(this.lirikData);
+				$('video, object').maximage('maxcover');
+				// $('#imageBg').maximage();
 				reloadReveal();
+
+				$('#uploadBg').on('dragenter', this.dragFile);
+	      $('#uploadBg').on('dragover', this.dragFile);
+	      $('#uploadBg').on('drop', this.dropFile);
 			},
 			show: function(lirikData) {
 				var template = _.template($('#lirik-view-template').html());
@@ -78,6 +149,22 @@
 					this.$lirikView.append(template(baris));
 					ctr++;
 				}, this);
+			},
+			dragFile: function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+			},
+			dropFile: function(e) {
+				if(e.originalEvent.dataTransfer){
+				  if(e.originalEvent.dataTransfer.files.length) {
+				    e.preventDefault();
+				    e.stopPropagation();
+				    /*UPLOAD FILES HERE*/
+				    var file = e.originalEvent.dataTransfer.files[0];
+				    var type = file.type;
+				    changeBg(file);
+				  }   
+				}
 			}
 		}
 		$(document).ready(function () {

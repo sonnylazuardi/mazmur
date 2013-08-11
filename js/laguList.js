@@ -14,7 +14,7 @@
 		show: function(lagus) {
 			var laguList = new MazmurApp.LaguViewList({
 				collection: lagus
-			})
+			});
 			this.laguList.show(laguList);
 		},
 		addLagu: function(e) {
@@ -29,6 +29,7 @@
         return model.match( selector );
      	}));
      	MazmurApp.LaguList.show(filtered);
+     	filtered.at(0).select();
 		}
 	};
 
@@ -37,8 +38,8 @@
 		template: '#lagu-preview-template',
 		events: {
 			'click a.lagu-preview': 'selectLagu',
+			'dblclick a.lagu-preview': 'lirikLagu',
 			'click a#edit-lagu': 'editLagu',
-			'click a#delete-lagu': 'deleteLagu'
 		},
 		initialize: function() {
 			this.model.bind('selected', this.laguSelected, this);
@@ -57,11 +58,12 @@
 			this.model.destroy();
 		},
 		laguSelected: function() {
-			MazmurApp.LirikViewer.show(this.model);
 			this.$el.addClass('active');
-			if (typeof(windowPreview)!='undefined' && !windowPreview.closed) {
-				windowPreview.PresenterApp.init({lirikData: lirikData.toJSON()});
-			}
+			MazmurApp.PreviewList.show(this.model);
+			MazmurApp.PreviewList.previewTemp.at(0).select();
+		},
+		lirikLagu: function() {
+			MazmurApp.PreviewList.previewTemp.at(0).trigger('dblclicked');
 		},
 		laguDeselected: function() {
 			this.$el.removeClass('active');
@@ -70,7 +72,7 @@
 
 	MazmurApp.LaguViewList = Marionette.CollectionView.extend({
 		tagName: 'ul',
-		itemView: MazmurApp.LaguView, 
+		itemView: MazmurApp.LaguView,
 		initialize: function() {
 			this.collection.on('change', this.render, this);
 		}

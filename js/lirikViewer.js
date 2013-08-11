@@ -5,11 +5,10 @@
 
 	MazmurApp.LirikViewer = {
 		init: function() {
-			this.lirikList = MazmurApp.lirikList;
 			lirikData = new MazmurApp.LirikCollection();
+			MazmurApp.lirikList.show(new MazmurApp.LirikViewList());
 		},
-		show: function(lagu) {
-			var lirikText = lagu.get('lirik');
+		parse: function(lirikText, lirikData) {
 			var	parsed = lirikText.split('\n\n');
 			var ctr = 0;
 			lirikData.reset();
@@ -22,10 +21,22 @@
 				lirikData.push(lirik);
 				ctr++;
 			}, this);
-			var lirikList = new MazmurApp.LirikViewList({
+		},
+		show: function(lagu) {
+			var lirikText = lagu.get('lirik');
+			this.parse(lirikText, lirikData);
+			this.lirikViewList = new MazmurApp.LirikViewList({
 				collection: lirikData
 			});
-			this.lirikList.show(lirikList);
+			MazmurApp.lirikList.show(this.lirikViewList);
+			if (typeof(windowPreview)!='undefined' && !windowPreview.closed) {
+				windowPreview.PresenterApp.init({lirikData: lirikData.toJSON()});
+				if (currentBg) {
+					console.log(currentBg);
+					windowPreview.changeBg(currentBg);
+				}
+				windowPreview.blankSlide(false);
+			}
 		}
 	};
 
@@ -38,13 +49,14 @@
 
 	MazmurApp.LirikCollection = Backbone.Collection.extend({
 		model: MazmurApp.Lirik,
-		initialize: function() {
+		initialize: function(options) {
 			var singleSelect = new Backbone.Picky.SingleSelect(this);
     	_.extend(this, singleSelect);
-    	MazmurApp.vent.bind("prevSlide", this.prevSlide, this);
-    	MazmurApp.vent.bind("nextSlide", this.nextSlide, this);
+    	if (!options) {
+	    	MazmurApp.vent.bind("prevSlide", this.prevSlide, this);
+	    	MazmurApp.vent.bind("nextSlide", this.nextSlide, this);
+	    }
 		},
-
 		prevSlide: function() {
 			var index = this.indexOf(this.selected);
 	    if (index > 0){
@@ -55,7 +67,6 @@
 	    var lirik = this.at(index);
 	    lirik.select();
 		},
-
 		nextSlide: function() {
 			var index = this.indexOf(this.selected);
 	    if (index < this.length - 1){
@@ -90,11 +101,6 @@
 		lirikDeselected: function() {
 			this.$el.removeClass('active');
 		}
-	});
-
-	MazmurApp.LirikViewList = Marionette.CollectionView.extend({
-		tagName: 'ul',
-		itemView: MazmurApp.LirikView
 	});
 
 })(MazmurApp);

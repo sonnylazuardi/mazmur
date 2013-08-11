@@ -1,0 +1,27 @@
+html {overflow-x:hidden;}
+body {margin:0; padding:0}
+
+video, object {
+	top:0;left:0;
+	width: 100%;
+	height: 100%;
+	/*background: #000;*/
+	position:absolute;
+}
+#imageWrap, #videoWrap {
+	display: hidden;
+	/*width: 100%;
+	height: 100%;*/
+	/*background: #000;*/
+}
+
+#blackSlide {
+	z-index: 10;
+	display: none;
+	background: #000;
+	position: absolute;
+	top:0;
+	left:0;
+	width: 100%;
+	height: 100%;
+}

@@ -5,7 +5,7 @@
 
 	MazmurApp.AddEditLagu = {
 		init: function () {
-			this.mainRegion = MazmurApp.lirikList;
+			this.mainRegion = MazmurApp.laguForm;
 			$('a#removeAdd').click(this.removeAdd);
 		},
 		addEditLagu: function(lagu) {
@@ -13,7 +13,8 @@
 				model: lagu
 			});
 			this.mainRegion.show(addEditLaguView);
-		},
+			MazmurApp.laguForm.$el.hide().slideDown('slow');
+		}
 	};
 
 	var AddEditLaguView = Marionette.ItemView.extend({
@@ -39,12 +40,11 @@
 					}
 				});
 			}
+			MazmurApp.laguForm.reset();
+			MazmurApp.laguForm.$el.show().slideUp('slow');
 		},
 		removeAdd: function() {
-			if (MazmurApp.lagus.selected)
-				MazmurApp.LirikViewer.show(MazmurApp.lagus.selected);
-			else
-				MazmurApp.lirikList.reset();
+			MazmurApp.laguForm.$el.show().slideUp('slow');
 		}
 	});
 

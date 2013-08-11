@@ -1,6 +1,7 @@
 body {
 	background: url(../img/bg.png);
 	padding-top: 0;
+  /*height: 100%;*/
 	/*font-size: 16px;*/
 }
 @media (min-width:979px) {
@@ -12,9 +13,19 @@ body {
 a {
 	text-decoration: none;
 }
-#lagu-list, #lirik-list{
-  max-height: 480px;
+#hover-items, #live-items, #lagu-list{
+  /*max-height: 480px;*/
+  height: 10%;
   overflow: auto;
+}
+#uploadBg{
+  border:3px dashed #2c3e50;
+  border-radius: 8px;
+  float:right;
+  padding: 4px;
+  margin-right: 10px;
+  width: 90px;
+  cursor: pointer;
 }
 /* Flat Box */
 .box {
@@ -43,7 +54,7 @@ a {
 }
 .box li a.lagu-preview, .box li a.lirik-preview {
 	display: block;
-	padding: 18px 42px 17px 25px;
+	padding: 10px 20px;
 }
 .menu-lagu {
 	display: none;
@@ -91,7 +102,7 @@ a.lagu-preview:hover + .menu-lagu {
 .box-icon {
 	float: left;
 	font-size: 20px;
-	padding: 0px 15px 0 0;
+	padding: 0px 10px 0 0;
 }
 .box-header {
   position: relative;
@@ -99,7 +110,7 @@ a.lagu-preview:hover + .menu-lagu {
   background-size: 16px 16px;
   border-radius: 6px 6px 0 0;
   color: #34495e;
-  padding: 19px 25px 20px;
+  padding: 10px;
 }
 .box-header h4{
 	font-weight: bold;
