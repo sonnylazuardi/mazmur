@@ -1,9 +1,23 @@
 mazmur
 ======
 
-Church Worship Presentation Web Application
+Church Worship Lyrics Presentation Web Application
 
 ![mazmur screenshot](https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-prn1/1014013_10201064598689969_1257027394_n.jpg)
+
+Technology Stack
+----------------
+
+1. Backbone.js
+2. Marionette.js
+3. Reveal.js
+4. jQuery
+
+Features
+--------
+1. Lyrics input form
+2. Background image and video
+3. Schedule (in progress)
 
 Usage
 -----
