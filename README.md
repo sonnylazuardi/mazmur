@@ -31,4 +31,4 @@ Usage
 
 Video Demo
 ----------
-https://www.facebook.com/l.php?u=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D7rVbCwQRVYI&h=RAQGQMJnv
+https://www.youtube.com/watch?v=7rVbCwQRVYI
