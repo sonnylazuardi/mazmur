@@ -28,3 +28,7 @@ Usage
 4. `npm install -g pushserve` to install the server
 5. `pushserve` in this directory will serve to localhost
 6. open in your browser `http://localhost:8000/`
+
+Video Demo
+----------
+https://www.facebook.com/l.php?u=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D7rVbCwQRVYI&h=RAQGQMJnv
