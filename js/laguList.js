@@ -25,6 +25,8 @@
 		},
 		loadLagu: function(e) {
 			e.preventDefault();
+			MazmurApp.lagus.reset();
+			MazmurApp.lagus.invoke('save');
 			// var Lagu = Backbone.Model.extend({
 			// 	defaults: function() {
 			// 	  return {
@@ -69,24 +71,38 @@
 			// 	});
 			// });
 		},
+		searchLagu2: function(search_text) {
+			var selector = {search_text: search_text};
+			var filtered = new MazmurApp.LaguCollection();
+			var self = this;
+			filtered.reset( MazmurApp.lagus.filter(function ( model ) {
+		        return model.match( selector );
+		    }));
+     		MazmurApp.LaguList.show(filtered);
+     		filtered.at(0).select();
+		},
 		searchLagu: function(e) {
 			var search_text = $(e.currentTarget).val();
 			var selector = {search_text: $(e.currentTarget).val()};
 			var filtered = new MazmurApp.LaguCollection();
+			var self = this;
+			MazmurApp.LaguCollection.prototype.add = function(item) {
+			    var isDupe = this.any(function(_item) { 
+			        return _item.get('judul') === item.get('judul');
+			    });
+			    return isDupe ? false : Backbone.Collection.prototype.add.call(this, item);
+			}
+			if (search_text.length > 1) {
+				$.get('http://smoothie.cloudapp.net/kidung/public/index.php/api/song/'+search_text, function(data) {
+					data.forEach(function (item) {
+						MazmurApp.lagus.add(new MazmurApp.Lagu(item));
+					});
+					self.searchLagu2(search_text);
+				});
+			}
 			filtered.reset( MazmurApp.lagus.filter(function ( model ) {
 		        return model.match( selector );
 		    }));
-		    if (search_text.length > 1) {
-				$.get('http://smoothie.cloudapp.net/kidung/public/index.php/api/song/'+search_text, function(data) {
-					data.forEach(function (item) {
-						filtered.create(item, {
-							success: function(lagu) {
-								//success add lagu
-							}
-						});
-					});
-				});
-			}
      		MazmurApp.LaguList.show(filtered);
      		filtered.at(0).select();
 		}
