@@ -60,7 +60,7 @@
   <script type="text/html" id="preview-template">
     <div class="box">
       <div class="box-header">
-        <input id="uploadBg" class="btn" type="file" accept="video/*|image/*"/>
+        <input id="uploadBg" class="btn" type="file" accept="video/*|image/*" style="text-indent:-999px"/>
         <span id="bgName"></span>
         <h4>Preview</h4>
       </div>
@@ -154,7 +154,8 @@
           <input id="search-lagu" class="box-search-field" style="width:200px" type="search" value="" placeholder="Search Songs">
           <div class="btn-group">
             <a id="add-lagu" class="btn btn-inverse" href="#"><i class="fui-plus"></i></a>
-            <a id="load-lagu" class="btn btn-inverse" href="#"><i class="fui-list"></i></a>
+            <a id="save-lagu" class="btn btn-inverse" href="#"><i class="fui-new"></i></a>
+            <input id="loadLagu" class="btn" type="file" accept="text/*" style="text-indent:-999px"/>
           </div> 
         </div>
         <div id="schedule-list">

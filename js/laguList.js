@@ -9,8 +9,10 @@
 			_.bindAll(this, 'addLagu', 'searchLagu');
 			this.laguList = MazmurApp.laguList;
 			$('a#add-lagu').click(this.addLagu);
+			$('a#save-lagu').click(this.saveLagu);
 			$('a#load-lagu').click(this.loadLagu);
 			$('input#search-lagu').on('input', this.searchLagu);
+			$('#loadLagu').change(this.loadLagu);
 		},
 		show: function(lagus) {
 			var laguList = new MazmurApp.LaguViewList({
@@ -23,7 +25,7 @@
 			MazmurApp.lagus.deselect();
 			MazmurApp.AddEditLagu.addEditLagu(new MazmurApp.Lagu());
 		},
-		loadLagu: function(e) {
+		saveLagu: function(e) {
 			e.preventDefault();
 			// MazmurApp.lagus.reset();
 			// MazmurApp.lagus.invoke('save');
@@ -31,6 +33,27 @@
 		    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(MazmurApp.lagus.toJSON())));
 		    pom.setAttribute('download', 'song.txt');
 		    pom.click();
+		},
+		loadLagu: function(e) {
+			if (e.currentTarget.files.length) {
+				e.preventDefault();
+				e.stopPropagation();
+				var f = e.currentTarget.files[0];
+			    if (f) {
+			      var r = new FileReader();
+			      r.onload = function(e) { 
+			        var contents = e.target.result;
+			        var data = JSON.parse(contents);
+			        data.forEach(function (item) {
+			        	MazmurApp.lagus.create(item);
+			        });
+			      }
+			      r.readAsText(f);
+			    } else { 
+			      alert("Gagal me-load file");
+			    }
+			}
+		    
 		},
 		searchLagu2: function(search_text) {
 			var selector = {search_text: search_text};

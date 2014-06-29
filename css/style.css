@@ -18,7 +18,7 @@ a {
   height: 10%;
   overflow: auto;
 }
-#uploadBg{
+input.btn{
   border:3px dashed #2c3e50;
   border-radius: 8px;
   float:right;
