@@ -24,6 +24,9 @@
 					.value()
 				)
 			);
+		},
+		toJSON : function() {
+			return _.clone(this.attributes);
 		}
 	});
 
@@ -34,7 +37,10 @@
 			var singleSelect = new Backbone.Picky.SingleSelect(this);
     		_.extend(this, singleSelect);
 		},
-		localStorage: new Backbone.LocalStorage("LaguCollection")
+		localStorage: new Backbone.LocalStorage("LaguCollection"),
+		toJSON : function() {
+			return this.map(function(model){ return model.toJSON(); });
+		}
 	});
 
 })(MazmurApp);

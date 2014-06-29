@@ -25,51 +25,12 @@
 		},
 		loadLagu: function(e) {
 			e.preventDefault();
-			MazmurApp.lagus.reset();
-			MazmurApp.lagus.invoke('save');
-			// var Lagu = Backbone.Model.extend({
-			// 	defaults: function() {
-			// 	  return {
-			// 	    title: "judul baru...",
-			// 	    content: "lirik baru..."
-			// 	  };
-			// 	},
-			// 	initialize: function() {
-			// 	  if (!this.get("title")) {
-			// 	    this.set({"title": this.defaults().title});
-			// 	  }
-			// 	},
-			// });
-			// var LaguList = Backbone.Firebase.Collection.extend({  
-			//     model: Lagu,  
-			//     firebase: "https://kidung.firebaseio.com/songs",
-			//     done: function() {
-			//     	console.log('finish');
-			//     },
-			// });
-			// var Lagus = new LaguList();
 			// MazmurApp.lagus.reset();
-			// Lagus.on('add', function(e) { 
-			// 	var str = e.get('content');
-			// 	var regex = /<br[^>]*>/gi;
-			// 	console.log(str.replace(regex, "\n\n\n"));
-			// 	// MazmurApp.lagus.create({judul: e.get('title'), lirik: str.replace(regex, "\n\n")}, {
-			// 	// 	success: function(lagu) {
-			// 	// 		// MazmurApp.lagus.select(lagu);
-			// 	// 	}
-			// 	// })
-			// });
-			// console.log(Lagus);
-
-			// $.get('data/lagu.json', function (data) {
-			// 	data.forEach(function(item) {
-			// 		MazmurApp.lagus.create(item, {
-			// 			success: function(lagu) {
-			// 				MazmurApp.lagus.select(lagu);
-			// 			}
-			// 		});
-			// 	});
-			// });
+			// MazmurApp.lagus.invoke('save');
+			var pom = document.createElement('a');
+		    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(MazmurApp.lagus.toJSON())));
+		    pom.setAttribute('download', 'song.txt');
+		    pom.click();
 		},
 		searchLagu2: function(search_text) {
 			var selector = {search_text: search_text};
