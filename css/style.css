@@ -57,17 +57,18 @@ a {
 	padding: 10px 20px;
 }
 .menu-lagu {
-	display: none;
+	/*display: none;*/
+  opacity: 0;
 	position: absolute;
 	bottom: 0;
 	right: 0;
 }
-a.lagu-preview:hover + .menu-lagu {
+/*a.lagu-preview:hover + .menu-lagu {
 	display: block;
-	opacity: .4;
-}
+	opacity: 1;
+}*/
 .menu-lagu:hover {
-	opacity: 0;
+	opacity: 1;
 }
 .box li:hover {
 	background: #2c3e50 92% center no-repeat;

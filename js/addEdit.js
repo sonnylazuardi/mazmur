@@ -33,6 +33,7 @@
 				MazmurApp.lagus.deselect();
 				MazmurApp.lagus.select(this.model);
 			} else {
+				console.log(data);
 				this.collection.create(data, {
 					success: function(lagu) {
 						MazmurApp.lagus.add(lagu);

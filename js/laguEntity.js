@@ -32,7 +32,7 @@
 		// url: '/lagus',
 		initialize: function(options) {
 			var singleSelect = new Backbone.Picky.SingleSelect(this);
-    	_.extend(this, singleSelect);
+    		_.extend(this, singleSelect);
 		},
 		localStorage: new Backbone.LocalStorage("LaguCollection")
 	});
