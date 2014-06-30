@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="css/vendor/theme/default.css" id="theme">
 	<link rel="stylesheet" href="css/vendor/jquery.maximage.min.css">
 	<link rel="stylesheet" href="css/show.css">
+	<link rel="stylesheet" href="css/bigvideo.css">
 
 	<script type="text/html" id="lirik-view-template">
 		<section>
@@ -46,9 +47,13 @@
 	<script type="text/javascript" src="js/vendor/underscore-min.js"></script>
 	<script type="text/javascript" src="js/vendor/jquery.cycle.all.min.js"></script>
 	<script type="text/javascript" src="js/vendor/jquery.maximage.min.js"></script>
+	<script type="text/javascript" src="js/vendor/video.js"></script>
+	<script type="text/javascript" src="js/vendor/bigVideo.js"></script>
 	
 	<script src="js/vendor/reveal.min.js"></script>
 	<script>
+		var BV = new $.BigVideo();
+		BV.init();
 		// Full list of configuration options available here:
 		// https://github.com/hakimel/reveal.js#configuration
 		function reloadReveal() {
@@ -91,23 +96,39 @@
 				$(b).show().fadeOut('slow');
 			};
 			if (file.type.indexOf('video/') != -1) {
-				var cb1 = function(a, b) {
-	    		document.querySelector(b).src = fileURL;
-	    		$(b).maximage('maxcover');
-	    	};
-	    	var cb2 = function(a, b) {
-	    		document.querySelector(a).pause();
-	    	};
-	    	swapType('#videoWrap', '#imageWrap');
-	    	swapBg('#videoBg', '#videoBg2', cb1, cb2);
-	    } else if (file.type.indexOf('image/') != -1) {
-	    	var cb1 = function(a, b) {
-	    		$(b).html('<img src="'+fileURL+'" />');
-	    		$(b).maximage();
-	    	};
-	    	swapType('#imageWrap', '#videoWrap');
-				swapBg('#imageBg', '#imageBg2', cb1, null);
-	    }
+				// var cb1 = function(a, b) {
+		  //   		document.querySelector(b).src = fileURL;
+		  //   		$(b).maximage('maxcover');
+		  //   	};
+		  //   	var cb2 = function(a, b) {
+		  //   		document.querySelector(a).pause();
+		  //   	};
+		  //   	swapType('#videoWrap', '#imageWrap');
+		  //   	swapBg('#videoBg', '#videoBg2', cb1, cb2);
+		  		$('#blackSlide').fadeIn('fast', function() {
+		  			$('#imageBg').hide();
+		  			$('#imageBg2').hide();
+		  			if (BV) {
+			  			BV.show(fileURL);
+			  			BV.getPlayer().play();
+			  		}
+					$('#big-video-wrap').fadeIn('slow', function() {
+						$('#blackSlide').fadeOut('slow');
+					});
+		  		});
+		    } else if (file.type.indexOf('image/') != -1) {
+		    	var cb1 = function(a, b) {
+		    		$(b).html('<img src="'+fileURL+'" />');
+		    		$(b).maximage();
+		    	};
+		    	// swapType('#imageWrap', '#videoWrap');
+				swapBg('#imageBg', '#imageBg2', cb1, function() {
+					if (BV) {
+						BV.getPlayer().pause();
+					}
+					$('#big-video-wrap').fadeOut('slow');
+				});
+		    }
 		}
 
 		function clearSlide(status) {
